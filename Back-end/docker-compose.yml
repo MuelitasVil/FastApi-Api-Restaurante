@@ -1,0 +1,58 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:14.3
+    environment:
+      - DB_HOST=${DB_HOST}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./db:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d/create_tables.sql
+    ports:
+      - 5432:5432
+    networks:
+      - net
+
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development
+    depends_on:
+      - db
+    image: trazii-api_dev:1.0.0
+    volumes:
+      - ./app:/code/app
+      - ./tests:/code/tests
+      - ./.env:/code/.env
+      - ./main.py:/code/main.py
+      - ./config.py:/code/config.py
+      - ./.coverage:/code/.coverage
+      - ./logs:/code/logs
+    env_file:
+      - .env
+    ports:
+      - 8000:80
+    networks:
+      - net
+    links:
+      - db:db
+    command: uvicorn main:app --host "0.0.0.0" --port "80" --reload
+
+  pgadmin:
+    image: dpage/pgadmin4:7.7
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${ADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${ADMIN_PASSWORD}
+    ports:
+      - 8080:80
+    networks:
+      - net
+    links:
+      - db:db
+
+networks:
+  net:
+    driver: bridge
