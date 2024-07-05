@@ -1,0 +1,27 @@
+.libros-table-container {
+    margin-top: 20px;
+  }
+  
+  .consultar-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .libros-table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+  }
+  
+  .libros-table th, .libros-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .libros-table th {
+    background-color: grey;
+  }
+  

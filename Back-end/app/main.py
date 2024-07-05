@@ -6,13 +6,14 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(**APP_CONFIG)
 
 # App origins access
-origins = ["http://localhost:5000"]
+origins = ["http://localhost:3000"] 
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=origins,  # Permitir solicitudes desde http://localhost:3000
     allow_credentials=True,
-    allow_methods=origins,
-    allow_headers=origins,
+    allow_methods=["*"],  # Permitir todos los métodos HTTP (GET, POST, etc.)
+    allow_headers=["*"],  # Permitir todas las cabeceras
 )
 
 # Root/Index path
