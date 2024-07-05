@@ -3,13 +3,12 @@ services:
   db:
     image: postgres:14.3
     environment:
-      - DB_HOST=${DB_HOST}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - ./db:/var/lib/postgresql/data
-      - ./db:/docker-entrypoint-initdb.d/create_tables.sql
+      - db-data:/var/lib/postgresql/data
+      - ./db/database-postgres.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
     networks:
@@ -22,7 +21,7 @@ services:
       target: development
     depends_on:
       - db
-    image: trazii-api_dev:1.0.0
+    image: api_dev:1.0.0
     volumes:
       - ./app:/code/app
       - ./tests:/code/tests
@@ -56,3 +55,6 @@ services:
 networks:
   net:
     driver: bridge
+
+volumes:
+  db-data:

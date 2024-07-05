@@ -7,7 +7,6 @@ RUN pip install --upgrade pip
 COPY . /code
 # Install requirements (dev)
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /code/requirements-dev.txt
 # Expose port
 EXPOSE 80
 WORKDIR /code
